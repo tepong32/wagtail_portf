@@ -20,13 +20,16 @@
 
     {{ page.body|richtext }}
 
+    <div class="container-fluid">
     {% for item in page.gallery_images.all %}
         <div style="float: left; margin: 10px">
             {% image item.image fill-320x240 %}
             <p>{{ item.caption }}</p>
         </div>
     {% endfor %}
+    </div>
+    <hr>
 
-    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    <p><a href="{{ page.get_parent.url }}">Return to Blogs</a></p>
 
 {% endblock %}
