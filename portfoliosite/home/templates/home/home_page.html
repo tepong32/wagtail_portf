@@ -3,12 +3,30 @@
 {% load wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
+{% include 'home/home_css.html' %}
 
 {% block content %}
-	<div class="card">
-		<div class="card-body">
+	<!-- <style type="text/css">
+	    .hello {
+	        background-image: url('./media/images/teppy-designify.png');
+	        background-color: gray;
+	        background-repeat: no-repeat;
+	        background-size: cover;
+	        height: 700px;
+	        position: center;
+
+	    }
+	</style>
+ -->	<div class="bg-dark">
+		<div class="card-body col-md-5">
+			{% include 'home/teppyinfocard.html' %}
+			
+			<!-- <img src="./media/images/teppy-hd.png" class="teppypic"> -->
+		</div> 
+		<div>
 			{{ page.body|richtext }}
-		</div>  
+		</div>
 	</div>
+
       
 {% endblock %}
