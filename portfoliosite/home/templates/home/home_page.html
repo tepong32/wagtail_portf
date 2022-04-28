@@ -5,5 +5,10 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    {{ page.body|richtext }}    
+	<div class="card">
+		<div class="card-body">
+			{{ page.body|richtext }}
+		</div>  
+	</div>
+      
 {% endblock %}
