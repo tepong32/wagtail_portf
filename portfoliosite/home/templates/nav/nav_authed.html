@@ -18,18 +18,20 @@
     <div class="collapse navbar-collapse text-center" id="mainNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <a class="nav-link" href="#{#% url 'blogs' %#}"><i class="fas fa-comments m-2"></i>Blogs</a>
+          <a class="nav-link" href="/blog"><i class="fas fa-comments m-2"></i>Blogs</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#{#% url 'about' %#}"><i class="fa fa-info-circle m-2"></i>About</a>
         </li>
         
       </ul>
+
       <!-- User Search Form // not ideal to be included atm -->
       <!-- <form class="search-bar justify-content-start mr-3" onsubmit="return executeQuery();">
         <input type="text" class="form-control" name="q" id="nav-search-bar" placeholder="User search...">
       </form> -->
-      <div  class="dropdown-divider"></div>
+
+      
 
     </div>
   </div>
@@ -47,7 +49,7 @@
   function executeQuery() {
     var query = ""
     query = document.getElementById('nav-search-bar').value;
-    window.location.replace("{#% url 'user-search' %#}?q=" + query)
+    window.location.replace("{% url 'user-search' %}?q=" + query)
     return false
   }
 

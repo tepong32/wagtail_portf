@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'home',
     'blog',
     'search',
+    'user',
 
     # third-party apps
     'adminlte3',

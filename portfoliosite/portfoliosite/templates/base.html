@@ -74,9 +74,9 @@
     
 
     <!-- This block will contain the dynamic area of the site -->
-    <div class="container" style="padding-top: 4.8em; min-height: 100vh">
+    <div style="padding-top: 2rem;">
     {% block content %}
-    
+
         {% load wagtailfontawesome %}
              {% fontawesome_css %}
             <!-- Landing page (Home): -->
@@ -87,8 +87,8 @@
         {% endif %}
         
     {% endblock content %}
-
     </div>
+
     {% block extra_js %}
         <!-- JAVASCRIPTS before /body-tag -->
         <!-- Bootstrap -->
