@@ -28,6 +28,27 @@ INSTALLED_APPS = [
     'blog',
     'search',
 
+    # third-party apps
+    'adminlte3',
+    'adminlte3_theme',
+    # 'ckeditor',           # might not be needed anymore due to wagtail
+    # 'ckeditor_uploader',
+
+
+    # django-allauth needs this
+    'django.contrib.sites',
+    # below are everything all-auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to allauth to enable:
+    # 'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.twitter',
+    # add more if you wish to
+
+
+
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -65,6 +86,43 @@ MIDDLEWARE = [
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
+################## django-allauth needs this // this part was from the orig django project
+SITE_ID = 1
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': os.environ.get('GAUTH_CLIENTID'), # '960711795493-9vsgskaeg1qk3nc74qp27s9e7uoejitq.apps.googleusercontent.com'
+            'secret': os.environ.get('GAUTH_SECRET'),      # '0-tHwlg4jvax1jt7p-JnvBmj'
+            'key': ''
+        }
+    }
+}
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'     # for the css of crispy forms
+
+LOGIN_REDIRECT_URL = 'home'     # needed for the login.html success instance
+LOGIN_URL = 'login'             # for the @login_required decorator on user.views.profile
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # or only your domain name if you have your own mail server
+EMAIL_PORT = 587 #587
+EMAIL_USE_TLS = True
+
+
+# TO USE THESE VARIABLES BELOW, USE ENVIRONMENT VARIABLES TO HIDE SENSITIVE INFO
+# CHECK CoreyMs' Django TUTORIAL # 12 -- 14:20
+
+EMAIL_HOST_USER = os.environ.get('ADMIN_EMAIL_UN') # var for email username
+EMAIL_HOST_PASSWORD = os.environ.get('ADMIN_EMAIL_PW') # var for email pw
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # for email-sending pw-reset requests
+
+
+##################
+
 ROOT_URLCONF = 'portfoliosite.urls'
 
 TEMPLATES = [
@@ -84,6 +142,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'portfoliosite.wsgi.application'
 

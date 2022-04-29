@@ -1,0 +1,144 @@
+{% load static %}
+<div class="row" >
+	
+	<div class="container overflow-auto col-lg-7 col-sm-12 mb-2" style="min-height: 400px; max-height:400px;margin-bottom: 5px; padding: 0;">
+		<div class="col-12 col-sm-6 col-lg-12">
+			<div class="card card-primary card-tabs">
+			  <div class="card-header p-0 pt-1">
+			    <ul class="nav nav-tabs" id="custom-tabs-tab" role="tablist">
+			      <li class="nav-item">
+			        <a class="nav-link active" id="custom-tabs-announcements-tab" data-toggle="pill" href="#custom-tabs-announcements" role="tab" aria-controls="custom-tabs-announcements" aria-selected="false">Announcements:</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" id="custom-tabs-blogs-tab" data-toggle="pill" href="#custom-tabs-blogs" role="tab" aria-controls="custom-tabs-blogs" aria-selected="false">Latests</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" id="custom-tabs-members-tab" data-toggle="pill" href="#custom-tabs-members" role="tab" aria-controls="custom-tabs-members" aria-selected="false">Newest Members:</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" id="custom-tabs-etc-tab" data-toggle="pill" href="#custom-tabs-etc" role="tab" aria-controls="custom-tabs-etc" aria-selected="true">Free Stuffs! <small>(preview)</small></a>
+			      </li>
+			    </ul>
+			  </div>
+			  <div class="card-body">
+			    <div class="tab-content" id="custom-tabs-tabContent">
+			    	
+			      <!-- Announcements -->
+			      <div class="tab-pane fade active show" id="custom-tabs-announcements" role="tabpanel" aria-labelledby="custom-tabs-announcements-tab">
+			        {% for a in announcements %}
+			            <div class="announcementBox overflow-auto">
+			                <h4 class="quoteText text-danger">
+			                	{{ a.title }}
+			                </h4> 
+			                <i><small>{{a.date_posted}}</small></i>
+			                {{ a.content|safe }} <br/>
+			                by <b>{{a.author}}</b> <br/>
+			            </div>
+			        {% endfor %}
+			      </div>
+
+
+			      <!-- Blog Posts -->
+			      <div class="tab-pane fade" id="custom-tabs-blogs" role="tabpanel" aria-labelledby="custom-tabs-blogs-tab">
+						<div class="row">
+							{% for post in posts %}
+								<div class="col-10">
+									<a href="{% url 'post-detail' post.slug %}">
+										<strong><i>{{post.title|truncatechars:50}}</i></strong>
+									</a>
+								</div>
+								<div class="col">
+									<small>{{post.author}}</small>
+								</div>
+							{% endfor %} <br>
+							<small>Total Post count: ({{postcount}})</small>
+						</div>
+			      </div>
+
+			      <!-- Newest members area -->
+			      <div class="tab-pane fade" id="custom-tabs-members" role="tabpanel" aria-labelledby="custom-tabs-members-tab">
+					<div class="card-body text-center">
+						<h6 class="quoteText text-danger">Say hello to our newest members!</h6>
+						<small>
+							Nag-register sila para mag-share! YES! | 
+							<i>Users count: {{ usercount }}</i><br>
+						</small>
+						{% for u in users %}
+						<div class="row">
+							<div class="col-4">
+								<a href="{% url 'profile' u.username %}" title="check {{u.username}}'s profile">{{u.username}}</a>
+							</div>
+							<div class="col">
+								<small class="text text-muted" style="font-size: 10px">registered: {{ u.date_joined|date:"F d, Y" }}</i></small>
+								<br>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+			      </div>
+
+			      <!-- Free -->
+			      <div class="tab-pane fade" id="custom-tabs-etc" role="tabpanel" aria-labelledby="custom-tabs-etc-tab">
+			      	<a href="#" title="Check-out these awesome stuffs!">
+			      		<h6 class="quoteText text-primary">Check-out these awesome stuffs! All for free!</h6>
+				        {% for item in free %}
+							<div class="col-10">
+								<strong><i>{{item.title|truncatechars:50}}</i></strong>
+							</div>
+						{% endfor %}
+					</a>
+			      </div>
+			    </div>
+			  </div>
+			  <!-- /.card -->
+			</div>
+		</div>
+	</div>
+
+	<!-- user panel -->
+	{% include 'home/authedUserPanel.html' %}
+
+    <!-- Documentary -->
+    <div class="card col-lg-7 col-sm-12">
+	    <div class="text-center m-2">
+			<b>Must-watch Documentary</b>
+		</div>
+		<iframe src="https://www.youtube.com/embed/zpNlG3VtcBM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: center; height: 300px; width: 100%; border-radius: 12px;"></iframe>
+	</div>
+
+	<!-- <div class="card-body">
+		<iframe src="https://www.youtube.com/embed/zpNlG3VtcBM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: center; height: 300px; width: 100%; border-radius: 12px;"></iframe>
+	</div> -->
+
+    <!-- Quotes CAROUSEL -->				
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin-bottom: 5px;">
+		<div class="carousel-inner bg-black" style="height: 100%">
+		  <!-- Default/First item on the Quotes carousel // hard-coded quote -->
+		  <div class="carousel-item active p-5 text-center" style="align-items: center">
+		    <div class="card-body quoteText">
+		    	Fall seven times; Stand-up eight.
+		    </div>
+		  </div>
+
+		  <!-- actual Quotes created using the admin page -->
+		  {% for quote in quotes%}
+		  <div class="carousel-item p-5 text-center" style="align-items: center">
+		    <div class="card-body quoteText">
+		    	<h6>{{quote.title}}</h6>
+		    </div>
+		    <small>--- {{quote.by}}</small>
+		  </div>
+		  {% endfor %}
+		</div>
+		<a class="carousel-control-prev mt-5" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next mt-5" href="#carouselExampleIndicators" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	</div>
+	<!-- /CAROUSEL -->
+
+</div>

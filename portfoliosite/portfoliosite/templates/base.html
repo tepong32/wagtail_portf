@@ -1,61 +1,115 @@
 {% load static wagtailcore_tags wagtailuserbar %}
+{% load adminlte_helpers i18n %} {% load static %}
 
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}
+<html lang="en">
+  <head>
+    <!-- this head part is default for AdminLTE -->
+    {% block title_outer %}
+        {% block title %}
                 {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
             {% endblock %}
             {% block title_suffix %}
                 {% wagtail_site as current_site %}
                 {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/portfoliosite.css' %}">
-
-        {% block extra_css %}
-            <!-- Bootstrap CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <!-- FontAwesome -->
-            <!-- <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css"/> -->
-            <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
-
         {% endblock %}
-    </head>
+    {% endblock %}
+    {% block meta %}
+    <!-- OWN HEAD ICON -->
+    <link rel="icon" sizes="192x192" href="media/defaults/round.png">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+      name="viewport"
+    />
+    {% endblock %}
 
-    <body class="{% block body_class %}{% endblock %}">
+    {% block stylesheets %}
+    {% include 'adminlte/lib/_styles.html' %}
+    {# Global stylesheets #}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfoliosite.css' %}">
+    <!-- Bootstrap Modal Forms  (removed for the meantime) -->
+    <!-- <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script> -->
+    <!-- Bootstrap 4 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/fontawesome-free/css/all.min.css"
+    />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css" />
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      rel="stylesheet"
+    />
+    {% endblock %}
+    
+  </head>
+  <!-- The actual viewing page -->
+  <body class="hold-transition sidebar-mini layout-navbar-fixed">
+
+    <!-- JAVASCRIPTS after body-tag -->
+    <!-- FB likes plugin -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0" nonce="smTllhV8"></script>
+    <!-- FB comments plugin -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0" nonce="nguTQ8Lu"></script>
+    <!-- FB share plugin -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0" nonce="IO6K7q2y"></script>
+
+    {% include 'home/_css.html' %}
+    <!-- Site Navigation -->
+    {% block navbar %}
+        {% if user.is_authenticated %}
+            {% include 'nav/nav_authed.html' %}
+        {% else %}
+            {% include 'nav/nav_unauthed.html' %}
+        {% endif %}
+    {% endblock navbar %}
+    
+
+    <!-- This block will contain the dynamic area of the site -->
+    <div class="container" style="padding-top: 4.8em; min-height: 100vh">
+    {% block content %}
+    
+        {% load wagtailfontawesome %}
+             {% fontawesome_css %}
+            <!-- Landing page (Home): -->
+        {% if user.is_authenticated %}
+          {% include 'home/home_authed.html' %}
+        {% else %}
+          {% include 'home/home_unauthed.html' %}
+        {% endif %}
         
+    {% endblock content %}
 
-        {# added a custom navigation header #}
-        {% include 'header_navigation.html' %}
+    </div>
+    {% block extra_js %}
+        <!-- JAVASCRIPTS before /body-tag -->
+        <!-- Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
-        {# content block enclosed on a div for padding to avoid overlapping with fixed navbar #}
-        <div class="content" style="padding-top: 1rem;">
-        {% wagtailuserbar %}
-        {% block content %}
-            {% load wagtailfontawesome %}
-            {% fontawesome_css %}
-        {% endblock %}
-        </div>
+        <!-- Fontawesome -->
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.slim.js"
+          integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+          crossorigin="anonymous"
+        ></script>
+        <script src="https://use.fontawesome.com/2363b49f19.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      
 
+        {% include 'adminlte/lib/_scripts.html' %}
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/portfoliosite.js' %}"></script>
-
-        {% block extra_js %}
-            <!-- Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-            <!-- Fontawesome -->
-            <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
-            <script src="https://use.fontawesome.com/2363b49f19.js"></script> -->
-        {% endblock %}
-    </body>
+    {% endblock extra_js %}
+  </body>
+  {% block footer %}
+    {% include 'nav/footer.html' %}
+  {% endblock footer %}
 </html>
